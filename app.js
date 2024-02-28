@@ -136,7 +136,7 @@ var encrypt = hash => {
   var parsedHash = "";
   var leftToRight = true;
   while (lst.length !== 0) {
-    if (leftToRight || lst.length === 2) {
+    if (leftToRight || (lst.length === 2 && hash.length%4!==0)) {
       var first = lst.shift();
       var second = lst.pop();
       leftToRight = false;
@@ -155,7 +155,8 @@ var encrypt = hash => {
 var decrypt = hash => {
 
   var lst = hash.split('');
-  var unparsedHash = hash.slice(-2);
+  console.log(hash.slice(-2, -1))
+  var unparsedHash = hash.length%4===0 ? hash.slice(-1) + hash.slice(-2, -1) : hash.slice(-2);
   lst.pop();
   lst.pop();
   var invert = lst.length%4!==0 ? true : false;
@@ -201,5 +202,5 @@ var decrypter = message => {
   return unparsedMessage;
 }
 
-console.log(encrypter("MynameisLeonard"));
-console.log(decrypter("HiBokddkomeehMs"));
+console.log(encrypter("Megustalalecheconchocolate"));
+console.log(decrypter("Iijoagvkosmjekrbcanleocceh"));
