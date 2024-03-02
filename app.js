@@ -60,7 +60,6 @@ const code = {
   "Z": 58,
   "Æ": 59
 };
-
 const revCode = {
   "0": "a",
   "1": "b",
@@ -124,6 +123,7 @@ const revCode = {
   "59": "Æ",
 };
 const sepSequences = {
+  0: "roPøuinalw",
   1: 'PwÇicdhkwV',
   2: 'YtsaqsBqlP',
   3: 'xmqzeÆØher',
@@ -248,21 +248,19 @@ const spaceKeys = {
   60: 'WMFtbvçTHDgmonaVxæØGfleQzcuXjOdYJÇhñCÆwNBqrøÑUKkPsipyAZELSIR'
 }
 
-// Encryption/Decryption tools:
-var parse = string => {
+// Encryption functions
+var parseMessage = message => {
   var hash = "";
   var spc = []
-  for (i=0; i<string.length; i++){
-
-    chr = code[string[i]];
-    if (string[i] !== " "){
+  for (i=0; i<message.length; i++){
+    chr = code[message[i]];
+    if (message[i] !== " "){
       if (chr.toString().length < 2) {
         hash += `0${chr}`;
       }
       else {
         hash += chr;
       }
-
     }
     else {
       spc.push(i);
@@ -270,34 +268,9 @@ var parse = string => {
   }
   return [hash, spc];
 }
-var unparse = hash => {
-  string = "";
-  for (i=0; i<hash.length; i+=2) {
-    str = revCode[+hash.slice(i, i+2)]
-    string += str;
-  }
-  return string;
-}
-var encryptSpaces = (spc, message) => {
-  var encryptedSpaces = sepSequences[spc.length];
-  var len = message.length>60 ? 60 : message.length;
-  console.log(message.length)
-  var thresh = false;
-  var diff = 0;
-  for (i of spc) {
-    console.log(i)
-    if (parseInt(i) > 59 && !thresh) {
-      encryptedSpaces += "ї";
-      diff = 60;
-      thresh = true;
-    }
-    encryptedSpaces += spaceKeys[len][parseInt(i - diff)];
-  }
-  return encryptedSpaces;
-}
-var encryptWords = hash => {
+var encryptChars = hash => {
   var lst = hash.split('');
-  var parsedHash = "";
+  var encryptedHash = "";
   var leftToRight = true;
   while (lst.length !== 0) {
     if (leftToRight || (lst.length === 2 && hash.length%4!==0)) {
@@ -310,16 +283,68 @@ var encryptWords = hash => {
       var second = lst.shift();
       leftToRight = true;
     }
-    parsedHash += `${first}${second}`;
+    encryptedHash += `${first}${second}`;
 
   }
-  return parsedHash;
+  var string = "";
+  for (i=0; i<encryptedHash.length; i+=2) {
+    str = revCode[+encryptedHash.slice(i, i+2)]
+    string += str;
+  }
+
+  return string;
 
 }
-var decrypt = hash => {
+var encryptSpaces = (spc, message) => {
+  var encryptedSpaces = sepSequences[spc.length];
+  var len = message.length>60 ? 60 : message.length;
+  var thresh = false;
+  var diff = 0;
+  for (i of spc) {
+    if (parseInt(i) > 59 && !thresh) {
+      encryptedSpaces += "ї";
+      diff = 60;
+      thresh = true;
+    }
+    encryptedSpaces += spaceKeys[len][parseInt(i - diff)];
+  }
+  return encryptedSpaces;
+}
+
+// Decryption functions
+var parseCode = message => {
+  var sep;
+  for (i of Object.values(sepSequences)) {
+    if (message.includes(i)) {
+      sep = i;
+      break
+    }
+  }
+
+  //Separate chars, spaces from code
+  var sepIdx = message.indexOf(sep);
+  var spc = message.slice(sepIdx+10);
+  var words = message.slice(0, sepIdx);
+
+  //Turn chars into hash
+  var hash = ""
+  for (i=0; i<words.length; i++){
+    chr = code[words[i]];
+    if (chr.toString().length < 2) {
+      hash += `0${chr}`;
+    }
+    else {
+      hash += chr;
+    }
+  }
+
+  //return hash, spaces
+  return [hash, spc];
+}
+var decryptChars = hash => {
 
   var lst = hash.split('');
-  var unparsedHash = hash.length%4===0 ? hash.slice(-1) + hash.slice(-2, -1) : hash.slice(-2);
+  var uncryptedHash = hash.length%4===0 ? hash.slice(-1) + hash.slice(-2, -1) : hash.slice(-2);
   lst.pop();
   lst.pop();
   var invert = lst.length%4!==0 ? true : false;
@@ -334,27 +359,57 @@ var decrypt = hash => {
       var right = lst.pop();
       invert = true;
     }
-
-    unparsedHash = left + unparsedHash + right;
+    uncryptedHash = left + uncryptedHash + right;
   }
-  return unparsedHash;
+  var string = "";
+  for (i=0; i<uncryptedHash.length; i+=2) {
+    str = revCode[+uncryptedHash.slice(i, i+2)]
+    string += str;
+  }
+
+  return string;
+  //return unparsedHash;
 
 
 
 }
+var decryptSpaces = (spc, chars) => {
+  var diff = spc.includes("ї") ? -1 : 0;
+  var len = spc.length + chars.length + diff;
+  var spaceKey = len>60 ? spaceKeys[60] : spaceKeys[len];
+  var shift = 0;
+  message = chars;
+  for (var i=0;i<spc.length;i++) {
+    var symbol = spc[i];
+    if (symbol==="ї") {
+      shift += 60;
+      continue;
+    }
+    idx = spaceKey.indexOf(symbol) + shift;
+    message = message.slice(0, idx) + " " + message.slice(idx);
+  }
+  return message;
+}
+
 
 // Encryption/Decryption process:
 var encrypter = message => {
-  var parsedMessage = parse(message);
-  var encryptedWords = encryptWords(parsedMessage[0]);
-  var unparsedWords = unparse(encryptedWords);
+  var parsedMessage = parseMessage(message);
+  var encryptedChars = encryptChars(parsedMessage[0]);
   var encryptedSpaces = encryptSpaces(parsedMessage[1], message);
-  var encryptedMessage = unparsedWords + encryptedSpaces;
+  var encryptedMessage = encryptedChars + encryptedSpaces;
   return encryptedMessage;
 }
 var decrypter = message => {
-  var parsedMessage = parse(message);
-  var decryptedMessage = decrypt(parsedMessage[0]);
-  var unparsedMessage = unparse(decryptedMessage);
-  return unparsedMessage;
+  var parsedMessage = parseCode(message);
+  var decryptedChars = decryptChars(parsedMessage[0]);
+  var decryptedMessage = decryptSpaces(parsedMessage[1], decryptedChars);
+  return decryptedMessage;
 }
+
+console.log(encrypter("apple")); // Returns "ealpproPøuinalw"
+console.log(decrypter("ealpproPøuinalw")); // Returns "apple"
+console.log(encrypter("Hello world")); // Returns "DhcñjtolñxPwÇicdhkwVÇ"
+console.log(decrypter("DhcñjtolñxPwÇicdhkwVÇ")); // Returns "Hello world"
+console.log(encrypter("This is my first encryption code")); // Returns "WcdhfqtbdqxkqçtyhogærrtbvlevjaQywuxUæhNæxu"
+console.log(decrypter("WcdhfqtbdqxkqçtyhogærrtbvlevjaQywuxUæhNæxu")); // Returns "This is my first encryption code"
