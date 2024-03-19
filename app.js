@@ -685,21 +685,84 @@ var decrypter = message => {
   return decryptedMessage;
 }
 
-//TESTING
-console.log(encrypter("apple")); // Returns "caκéíΒolγLiθπΔc"
-console.log(decrypter("caκéíΒolγLiθπΔc")); // Returns "apple"
-console.log();
-console.log(encrypter("Hello world!")); // Returns "υOβcγγφκθθnλÉhνΔnCúςρf"
-console.log(decrypter("υOβcγγφκθθnλÉhνΔnCúςρf")); // Returns "Hello world!"
-console.log();
-console.log(encrypter("This is my first encryption code, and it's working!")); // Returns "ÁQeεiéíggéχkθhρjbmiΝκχígκβdhédδKlαωáμékβiéθYrKlμZχokiyñΠκsxCη"
-console.log(decrypter("ÁQeεiéíggéχkθhρjbmiΝκχígκβdhédδKlαωáμékβiéθYrKlμZχokiyñΠκsxCη")); // Returns "This is my first encryption code"
-console.log();
-console.log(encrypter("Today's date is: 03/03/2024.")); // Returns "BMéΜeGdΔrEÓWnFdGbΣnGdΓθΘkΛíπΔλxóBscfIÑ"
-console.log(decrypter("BMéΜeGdΔrEÓWnFdGbΣnGdΓθΘkΛíπΔλxóBscfIÑ")); // Returns ""
-console.log();
-console.log(encrypter("As I always say, \"Let's always stay curious!\"")); // Returns "qÓlÓτkcíθγíιαípjkbjóaaωjKmÓmςqacnκΩiíbÓpQoδHgμχπhαéΠümó"
-console.log(decrypter("qÓlÓτkcíθγíιαípjkbjóaaωjKmÓmςqacnκΩiíbÓpQoδHgμχπhαéΠümó")); // Returns ""
-console.log();
-console.log(encrypter("This secret bag costs €23.89!")); // Returns "ÁQcNγΘλKnFeΓaÚkχβlkκeφbaeαeΗylΒúΚüoβEιQ"
-console.log(decrypter("ÁQcNγΘλKnFeΓaÚkχβlkκeφbaeαeΗylΒúΚüoβEιQ")); // Returns ""
+//TESTING:
+// console.log(encrypter("apple")); // Returns "caκéíΒolγLiθπΔc"
+// console.log(decrypter("caκéíΒolγLiθπΔc")); // Returns "apple"
+// console.log();
+// console.log(encrypter("Hello world!")); // Returns "υOβcγγφκθθnλÉhνΔnCúςρf"
+// console.log(decrypter("υOβcγγφκθθnλÉhνΔnCúςρf")); // Returns "Hello world!"
+// console.log();
+// console.log(encrypter("This is my first encryption code, and it's working!")); // Returns "ÁQeεiéíggéχkθhρjbmiΝκχígκβdhédδKlαωáμékβiéθYrKlμZχokiyñΠκsxCη"
+// console.log(decrypter("ÁQeεiéíggéχkθhρjbmiΝκχígκβdhédδKlαωáμékβiéθYrKlμZχokiyñΠκsxCη")); // Returns "This is my first encryption code, and it's working!"
+// console.log();
+// console.log(encrypter("Today's date is: 03/03/2024.")); // Returns "BMéΜeGdΔrEÓWnFdGbΣnGdΓθΘkΛíπΔλxóBscfIÑ"
+// console.log(decrypter("BMéΜeGdΔrEÓWnFdGbΣnGdΓθΘkΛíπΔλxóBscfIÑ")); // Returns "Today's date is: 03/03/2024."
+// console.log();
+// console.log(encrypter("As I always say, \"Let's always stay curious!\"")); // Returns "qÓlÓτkcíθγíιαípjkbjóaaωjKmÓmςqacnκΩiíbÓpQoδHgμχπhαéΠümó"
+// console.log(decrypter("qÓlÓτkcíθγíιαípjkbjóaaωjKmÓmςqacnκΩiíbÓpQoδHgμχπhαéΠümó")); // Returns "As I always say, "Let's always stay curious!""
+// console.log();
+// console.log(encrypter("This secret bag costs €23.89!")); // Returns "ÁQcNγΘλKnFeΓaÚkχβlkκeφbaeαeΗylΒúΚüoβEιQ"
+// console.log(decrypter("ÁQcNγΘλKnFeΓaÚkχβlkκeφbaeαeΗylΒúΚüoβEιQ")); // Returns "This secret bag costs €23.89!"
+
+//WEB FUNCTIONALITY
+
+function transformText(encrypt) {
+  let text = document.querySelector(".text-input input").value;
+  if (text) {
+    if ((text.length >=8) && (text.length <= 120)) {
+      try {
+        let transformedText = encrypt ? encrypter(text) : decrypter(text);
+        let outputMessage = encrypt ? "Your encrypted text is:" : "Your decrypted text is:";
+        document.querySelector(".text-output h3").innerHTML = outputMessage;
+        document.querySelector(".text-output p").innerHTML = transformedText;
+        document.querySelector(".output button").style = "opacity:1;";
+        document.querySelector(".output button").disabled = false;
+      }
+      catch {
+        document.querySelector(".text-output h3").innerHTML = "Please enter a valid input.";
+        document.querySelector(".text-output p").innerHTML = "";
+        document.querySelector(".output button").style = "opacity:0;disabled:true;";
+      }
+    }
+    else {
+      alert("Your text must be between 8 and 120 characters long.")
+    }
+  }
+  else {
+    alert("Input field can't be empty.")
+  }
+}
+function checkInputLength() {
+  let text = document.querySelector(".text-input input").value;
+  if ((text.length >=8) && (text.length <= 120)) {
+    document.querySelector(".message").innerHTML = "";
+    document.querySelectorAll(".input-actions button").forEach(e => {
+      e.disabled = false;
+    });
+  }
+  else {
+    document.querySelector(".message").innerHTML = "Your message must be 8 to 120 characters long.";
+    document.querySelectorAll(".input-actions button").forEach(e => {
+      e.disabled = true;
+    });
+  }
+}
+function eraseInput() {
+  document.querySelector(".text-input input").value = "";
+  document.querySelectorAll(".input-actions button").forEach(e => {
+    e.disabled = true;
+  });
+}
+async function copyOutput() {
+    let text = document.querySelector(".output .text-output p");
+    navigator.clipboard.writeText(text.innerHTML);
+    console.log(navigator.clipboard);
+    document.querySelector(".output button").innerHTML = "Copied!";
+}
+
+//EVENT LISTENERS
+document.querySelector(".text-input input").addEventListener("keyup", function(e) {
+    if (e.key === "Enter") {
+        document.querySelector(".input-actions button").click();
+    }
+});

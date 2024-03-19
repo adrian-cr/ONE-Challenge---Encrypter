@@ -1,9 +1,43 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="app.js"></script>
+        <meta charset="UTF-8">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&family=Lunasima:wght@400;700&display=swap" rel="stylesheet">
+        <link href="styles.css" rel="stylesheet">
     </head>
     <body>
-        <h1 style="color:red">Henlo</h1>
+      <h1>ONE εNςrγρTεR</h1>
+      <section class="encrypter">
+        <div class="input">
+          <h3>Enter your text:</h3>
+          <div class="text-input">
+            <input onkeyup="checkInputLength();" type="text" required>
+            <button onclick="eraseInput();">
+              <i class="fa fa-eraser"></i>
+            </button>
+            <p class="message"></p>
+          </div>
+          <div class="input-actions">
+            <button onclick="transformText(encrypt=true);" disabled>Encrypt</button>
+            <button onclick="transformText(encrypt=false);" disabled>Decrypt</button>
+          </div>
+        </div>
+        <div class="output">
+          <div class="text-output">
+            <h3></h3>
+            <p></p>
+          </div>
+          <button onclick="copyOutput()" disabled>Copy</button>
+        </div>
+      </section>
+      <footer>
+        <div class="disclaimer">
+          <p> This project was developed as a part of the</p><img id="logo" src="images/logo.png"><p>Web Development program.</p>
+        </div>
+      </footer>
+      <script src="app.js"></script>
     </body>
 </html>
