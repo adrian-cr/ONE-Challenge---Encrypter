@@ -717,6 +717,7 @@ function checkInputLength() {
     });
   }
   else {
+    document.querySelector(".message").style = "display:unset;"
     document.querySelector(".message").innerHTML = "Your message must be 8 to 120 characters long.";
     document.querySelectorAll(".input-actions button").forEach(e => {
       e.disabled = true;

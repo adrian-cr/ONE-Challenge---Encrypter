@@ -126,6 +126,7 @@ p {
 /* Class-Level Styling */
 
 .message {
+  display:none;
   font-size: 1em;
   font-style: italic;
   margin-bottom: 5px;
@@ -172,11 +173,29 @@ p {
   display: none;
 }
 
+#desk-erase, #mobile-erase {
+  background-color: #48f542;
+  color:#FFF;
+}
+
+#desk-erase:hover, #mobile-erase:hover {
+  background-color: #FFF;
+  color:#48f542;
+}
+
+#desk-erase:hover i, #mobile-erase:hover i {
+  color: #FFF;
+}
+
 /* Media Queries */
 
 @media screen and (max-width: 500px) {
 
   button {
+    border-radius: 10px;
+    font-size: 0.9em;
+    height: 30px;
+    margin: 0 0.1em;
     min-width: 40%;
   }
 
@@ -186,16 +205,22 @@ p {
   }
 
   h1 {
-    font-size: 3em;
+    font-size: 2.5em;
+    line-height: 0.8em;
+    margin-top: 0.2em;
+    margin-bottom: 0.5em;
   }
 
   h3 {
+    font-size: 1.2em;
     min-height: none;
-    margin-bottom: 10px;
+    margin-top: 0.5em;
+    margin-bottom: 5px;
   }
 
   input {
-    margin-bottom: 5%;
+    border-radius: 15px;
+    font-size: 1.5em;
     margin-left: 0;
     min-height: none;
     min-height:30px;
@@ -203,38 +228,40 @@ p {
     width:80%;
   }
 
-  .input .text-input {
-    display: block;
-    text-align: center;
-  }
-
-  .input .text-input button {
-    min-height: 0;
-    height: 30px;
-  }
   #desk-erase {
     display: none;
   }
 
   #mobile-erase {
-    font-size: 15px;
-    display: unset;
-    width: 50%
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    margin: 10px 35% 0 35%;
+    min-height: 0;
+    min-width: 0;
+    justify-content: center;
+    width: 30%;
   }
 
   #mobile-erase .fa {
     font-size: 15px;
-
+    margin-right: 3px;
   }
 
-  .text-output {
-    text-align: left !important;
+  .message {
+    font-size: 0.5em;
+    margin-top: -20px;
+    margin-bottom: 5px;
+    position: relative;
+    top: -8px;
+    width: 100%;
   }
 
   .text-output p {
     font-size: 1.5em;
-    height: 50px;
     width: 98%;
+    margin-bottom: 0;
     padding: 1%;
     text-align: center;
     word-break: break-all;
