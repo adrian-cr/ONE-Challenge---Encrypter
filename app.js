@@ -706,33 +706,9 @@ var decrypter = message => {
 
 //WEB FUNCTIONALITY
 
-function transformText(encrypt) {
-  let text = document.querySelector(".text-input input").value;
-  if (text) {
-    if ((text.length >=8) && (text.length <= 120)) {
-      try {
-        let transformedText = encrypt ? encrypter(text) : decrypter(text);
-        let outputMessage = encrypt ? "Your encrypted text is:" : "Your decrypted text is:";
-        document.querySelector(".text-output h3").innerHTML = outputMessage;
-        document.querySelector(".text-output p").innerHTML = transformedText;
-        document.querySelector(".output button").style = "opacity:1;";
-        document.querySelector(".output button").disabled = false;
-      }
-      catch {
-        document.querySelector(".text-output h3").innerHTML = "Please enter a valid input.";
-        document.querySelector(".text-output p").innerHTML = "";
-        document.querySelector(".output button").style = "opacity:0;disabled:true;";
-      }
-    }
-    else {
-      alert("Your text must be between 8 and 120 characters long.")
-    }
-  }
-  else {
-    alert("Input field can't be empty.")
-  }
-}
+let out = false;
 function checkInputLength() {
+  // Ensures valid string length as user types
   let text = document.querySelector(".text-input input").value;
   if ((text.length >=8) && (text.length <= 120)) {
     document.querySelector(".message").innerHTML = "";
@@ -747,17 +723,57 @@ function checkInputLength() {
     });
   }
 }
-function eraseInput() {
-  document.querySelector(".text-input input").value = "";
-  document.querySelectorAll(".input-actions button").forEach(e => {
+function transformText(encrypt) {
+  // Encrypts/decrypts valid input; enables output elements
+  let text = document.querySelector(".text-input input").value;
+  if (text) {
+    if ((text.length >=8) && (text.length <= 120)) {
+      try {
+        let transformedText = encrypt ? encrypter(text) : decrypter(text);
+        let outputMessage = encrypt ? "Your encrypted text is:" : "Your decrypted text is:";
+        document.querySelector(".text-output h3").innerHTML = outputMessage;
+        document.querySelector(".text-output p").innerHTML = transformedText;
+        document.querySelector(".output button").style = "opacity:1;";
+        document.querySelector(".output button").disabled = false;
+        document.querySelector(".output button").innerHTML = "Copy";
+        out = true;
+      }
+      catch {
+        document.querySelector(".text-output h3").innerHTML = "Please enter a valid input.";
+        document.querySelector(".text-output p").innerHTML = "";
+        document.querySelector(".output button").style = "opacity:0";
+        document.querySelector(".output button").disabled = true;
+      }
+    }
+    else {
+      alert("Your text must be between 8 and 120 characters long.")
+    }
+  }
+  else {
+    alert("Input field can't be empty.")
+  }
+}
+function reset(eraser=false) {
+  // Resets element values; disables/hides output elements
+  if (out || eraser) {
+    document.querySelector(".text-input input").value = "";
+    document.querySelectorAll(".input-actions button").forEach(e => {
     e.disabled = true;
   });
+  document.querySelector(".text-output h3").innerHTML = "";
+  document.querySelector(".text-output p").innerHTML = "";
+  document.querySelector(".output button").disabled = true;
+  document.querySelector(".output button").style = "opacity:0;";
+  out=false;
+  }
+
 }
 async function copyOutput() {
-    let text = document.querySelector(".output .text-output p");
-    navigator.clipboard.writeText(text.innerHTML);
-    console.log(navigator.clipboard);
-    document.querySelector(".output button").innerHTML = "Copied!";
+  // Allows for on-click clipboard writing
+  let text = document.querySelector(".output .text-output p");
+  navigator.clipboard.writeText(text.innerHTML);
+  console.log(navigator.clipboard);
+  document.querySelector(".output button").innerHTML = "Copied!";
 }
 
 //EVENT LISTENERS

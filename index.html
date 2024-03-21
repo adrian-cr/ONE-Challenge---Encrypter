@@ -14,8 +14,8 @@
         <div class="input">
           <h3>Enter your text:</h3>
           <div class="text-input">
-            <input onkeyup="checkInputLength();" type="text" required>
-            <button onclick="eraseInput();">
+            <input onclick="reset()" onkeyup="checkInputLength();" type="text" required>
+            <button onclick="reset(eraser=true);">
               <i class="fa fa-eraser"></i>
             </button>
             <p class="message"></p>
@@ -30,7 +30,7 @@
             <h3></h3>
             <p></p>
           </div>
-          <button onclick="copyOutput()" disabled>Copy</button>
+          <button onclick="copyOutput()" disabled></button>
         </div>
       </section>
       <footer>
