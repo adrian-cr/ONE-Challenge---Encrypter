@@ -124,24 +124,28 @@ p {
 }
 
 /* Class-Level Styling */
+.input .text-input {
+  display: block;
+  text-align: center;
+}
 
 .message {
   display:none;
   font-size: 1em;
   font-style: italic;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.input .input-actions {
+  margin-top: 10px;
 }
 
 .input .text-input button {
   color: #48f542;
   min-height: 60px;
   position: relative;
-  top: -10px;
+  top:-10px;
   width: 1%;
-}
-
-.input .text-input button:hover i, .input .text-input button:hover {
-  color:white
 }
 
 .output h3 {
@@ -184,7 +188,7 @@ p {
 }
 
 #desk-erase:hover i, #mobile-erase:hover i {
-  color: #FFF;
+  color: #48f542;
 }
 
 /* Media Queries */
@@ -256,6 +260,10 @@ p {
     position: relative;
     top: -8px;
     width: 100%;
+  }
+
+  .input .input-actions {
+    margin-top: 0;
   }
 
   .text-output p {

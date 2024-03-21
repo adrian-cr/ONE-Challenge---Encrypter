@@ -18,8 +18,8 @@
             <input onfocusout="document.querySelector('.message').style='display:none;'" onclick="reset();checkInputLength();" onkeyup="checkInputLength();" type="text" required>
             <button id="desk-erase" onclick="reset(eraser=true);"><i class="fa fa-eraser"></i></button>
             <button id="mobile-erase" onclick="reset(eraser=true);"><i class="fa fa-eraser"></i>Erase</button>
-            <p class="message"></p>
           </div>
+          <p class="message"></p>
           <div class="input-actions">
             <button onclick="transformText(encrypt=true);" disabled>Encrypt</button>
             <button onclick="transformText(encrypt=false);" disabled>Decrypt</button>
