@@ -3,7 +3,7 @@
   font-weight: 300;
 }
 
-/* Tag-level styling */
+/* Tag-Level Styling */
 
 body {
   height: 100%;
@@ -23,7 +23,8 @@ button {
   height: 50px;
   margin: 0 1%;
   min-width: 2em;
-  width: 15%
+  width: 15%;
+  z-index: 99999;
 }
 
 button:disabled {
@@ -78,9 +79,6 @@ h3 {
 }
 
 img {
-  /*position: absolute;
-  bottom: 10px;
-  right: 10px;*/
   margin: 1.5%;
   width: 8%
 }
@@ -125,7 +123,7 @@ p {
   text-shadow: #FFF 1px 0 50px, #FFF 1px 0 20px, #FFF 1px 0 10px, #FFF 1px 0 2px;
 }
 
-/* Class-level styling */
+/* Class-Level Styling */
 
 .message {
   font-size: 1em;
@@ -141,7 +139,7 @@ p {
   width: 1%;
 }
 
-.input .text-input button:hover i {
+.input .text-input button:hover i, .input .text-input button:hover {
   color:white
 }
 
@@ -163,7 +161,102 @@ p {
 .disclaimer p {
   color: gray;
   display: inline;
-  font-size:200%;
+  font-size: 1.5em;
   font-style: italic;
   font-weight: 400;
+}
+
+/* ID-Level Styling */
+
+#mobile-erase {
+  display: none;
+}
+
+/* Media Queries */
+
+@media screen and (max-width: 500px) {
+
+  button {
+    min-width: 40%;
+  }
+
+  footer {
+    min-height: 150px;
+    align-items: end;
+  }
+
+  h1 {
+    font-size: 3em;
+  }
+
+  h3 {
+    min-height: none;
+    margin-bottom: 10px;
+  }
+
+  input {
+    margin-bottom: 5%;
+    margin-left: 0;
+    min-height: none;
+    min-height:30px;
+    padding: 1% 3%;
+    width:80%;
+  }
+
+  .input .text-input {
+    display: block;
+    text-align: center;
+  }
+
+  .input .text-input button {
+    min-height: 0;
+    height: 30px;
+  }
+  #desk-erase {
+    display: none;
+  }
+
+  #mobile-erase {
+    font-size: 15px;
+    display: unset;
+    width: 50%
+  }
+
+  #mobile-erase .fa {
+    font-size: 15px;
+
+  }
+
+  .text-output {
+    text-align: left !important;
+  }
+
+  .text-output p {
+    font-size: 1.5em;
+    height: 50px;
+    width: 98%;
+    padding: 1%;
+    text-align: center;
+    word-break: break-all;
+  }
+
+  .disclaimer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap:wrap;
+    height: 50%;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .disclaimer img {
+    width: 100px;
+  }
+
+  .disclaimer p {
+    color: rgb(70, 70, 70);
+    font-size: 0.9em;
+    padding:0 5%;
+    width: 90%;
+  }
 }
