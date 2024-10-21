@@ -10,6 +10,7 @@ body {
   background-image: url("images/background.jpeg");
   background-size: 100%;
   margin: 0;
+  user-select: none;
   width: 100%;
 }
 
