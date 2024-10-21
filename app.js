@@ -732,8 +732,13 @@ function transformText(encrypt) {
       try {
         let transformedText = encrypt ? encrypter(text) : decrypter(text);
         let outputMessage = encrypt ? "Your encrypted text is:" : "Your decrypted text is:";
+        document.querySelector(".text-output p").innerHTML =
+         encrypt && transformedText.length > 30 ?
+         transformedText.slice(0,30) + "..."
+         :
+         transformedText;
         document.querySelector(".text-output h3").innerHTML = outputMessage;
-        document.querySelector(".text-output p").innerHTML = transformedText;
+        document.querySelector(".text-output p").value = transformedText;
         document.querySelector(".output button").style = "opacity:1;";
         document.querySelector(".output button").disabled = false;
         document.querySelector(".output button").innerHTML = "Copy";
@@ -769,10 +774,10 @@ function reset(eraser=false) {
   }
 
 }
-async function copyOutput() {
+function copyOutput() {
   // Allows for on-click clipboard writing
   let text = document.querySelector(".output .text-output p");
-  navigator.clipboard.writeText(text.innerHTML);
+  navigator.clipboard.writeText(text.value);
   console.log(navigator.clipboard);
   document.querySelector(".output button").innerHTML = "Copied!";
 }
